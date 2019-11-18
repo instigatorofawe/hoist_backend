@@ -1,5 +1,6 @@
 import bcrypt
 
+
 class User:
     def __init__(self, id, username, password_hash = None, salt = None):
         self.id = id

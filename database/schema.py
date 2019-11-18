@@ -1,5 +1,6 @@
 import sqlite3
 
+
 def init_db(database):
     con = sqlite3.connect(database)
     c = con.cursor()
@@ -8,6 +9,7 @@ def init_db(database):
     con.commit()
     con.close()
     return
+
 
 def clear_db(database):
     con = sqlite3.connect(database)
