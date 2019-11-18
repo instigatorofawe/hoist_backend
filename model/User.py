@@ -8,4 +8,10 @@ class User:
         self.salt = salt
 
     def verify(self, password):
+        if self.password_hash is None:
+            return False
         return bcrypt.hashpw(password.encode('utf-8'), self.salt) == self.password_hash
+
+    def set_password(self, password):
+        self.salt = bcrypt.gensalt()
+        self.password_hash = bcrypt.hashpw(password.encode('utf-8'), self.salt)
