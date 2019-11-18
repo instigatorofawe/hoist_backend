@@ -1,3 +1,4 @@
 .idea
 /venv/
 /test/test_database/test.sqlite
+/test/test.sqlite

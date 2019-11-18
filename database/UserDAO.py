@@ -7,16 +7,11 @@ class UserDAO:
         self.database = database
 
     def create(self, user):
-        if user.password_hash is None:
-            return False
-
         con = sqlite3.connect(self.database)
         c = con.cursor()
         c.execute("INSERT INTO users VALUES (?, ?, ?, ?)", (user.id, user.username, user.password_hash, user.salt))
         con.commit()
         con.close()
-
-        return True
 
     def get(self, id):
         con = sqlite3.connect(self.database)
@@ -37,7 +32,6 @@ class UserDAO:
         c.execute("UPDATE users SET password_hash = ?, salt = ? WHERE id = ?", (user.password_hash, user.salt, user.id))
         con.commit()
         con.close()
-        return
 
     def delete(self, user):
         con = sqlite3.connect(self.database)
@@ -45,7 +39,6 @@ class UserDAO:
         c.execute("DELETE FROM users where id = ?", (id,))
         con.commit()
         con.close()
-        return
 
     def next_id(self):
         con = sqlite3.connect(self.database)
@@ -56,5 +49,5 @@ class UserDAO:
         con.close()
 
         if r[0] is None:
-            return 1
+            return 0
         return r[0] + 1
