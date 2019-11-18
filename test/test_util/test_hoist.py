@@ -1,6 +1,5 @@
 import unittest
 
-
 class TestHoist(unittest.TestCase):
     def test_init(self):
         # TODO
