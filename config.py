@@ -1,2 +1,2 @@
-db_name = 'db.sqlite'
+db_name = 'db_dev.sqlite'
 secret_key = ''

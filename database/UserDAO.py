@@ -19,7 +19,6 @@ class UserDAO:
         return True
 
     def get(self, id):
-
         con = sqlite3.connect(self.database)
         c = con.cursor()
         c.execute("SELECT * FROM users WHERE id = ?", (id,))
@@ -33,10 +32,29 @@ class UserDAO:
         return User(rows[0][0],rows[0][1], rows[0][2], rows[0][3])
 
     def update(self, user):
+        con = sqlite3.connect(self.database)
+        c = con.cursor()
+        c.execute("UPDATE users SET password_hash = ?, salt = ? WHERE id = ?", (user.password_hash, user.salt, user.id))
+        con.commit()
+        con.close()
         return
 
     def delete(self, user):
+        con = sqlite3.connect(self.database)
+        c = con.cursor()
+        c.execute("DELETE FROM users where id = ?", (id,))
+        con.commit()
+        con.close()
         return
 
     def next_id(self):
-        return
+        con = sqlite3.connect(self.database)
+        c = con.cursor()
+        c.execute("SELECT MAX(id) FROM users")
+        r = c.fetchone()
+        con.commit()
+        con.close()
+
+        if r[0] is None:
+            return 1
+        return r[0] + 1
