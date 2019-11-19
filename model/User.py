@@ -1,4 +1,8 @@
 import bcrypt
+import config
+import jwt
+import datetime
+import time
 
 
 class User:
@@ -16,3 +20,11 @@ class User:
     def set_password(self, password):
         self.salt = bcrypt.gensalt()
         self.password_hash = bcrypt.hashpw(password.encode('utf-8'), self.salt)
+
+    def issue_token(self):
+        payload = {
+            'issued': datetime.datetime.utcnow().timestamp(),
+            'expires': (datetime.datetime.utcnow() + datetime.timedelta(days=1)).timestamp(),
+            'user': self.id
+        }
+        return jwt.encode(payload,config.secret_key,algorithm='HS256')

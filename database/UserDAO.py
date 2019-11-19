@@ -41,6 +41,7 @@ class UserDAO:
         con.close()
 
     def next_id(self):
+        # Next available id
         con = sqlite3.connect(self.database)
         c = con.cursor()
         c.execute("SELECT MAX(id) FROM users")
