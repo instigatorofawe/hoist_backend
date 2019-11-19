@@ -9,7 +9,8 @@ class HoistDAO:
     def create(self, hoist):
         con = sqlite3.connect(self.database)
         c = con.cursor()
-        c.execute("INSERT INTO hoists VALUES(?,?,?,?,?)", (hoist.id, hoist.user.id, hoist.exercise, hoist.weight, hoist.reps))
+        c.execute("INSERT INTO hoists VALUES(?,?,?,?,?,?,?)",
+                  (hoist.id, hoist.user.id, hoist.session.id, hoist.exercise, hoist.weight, hoist.reps, hoist.time))
         con.commit()
         con.close()
 
@@ -23,12 +24,13 @@ class HoistDAO:
 
         if len(rows) == 0:
             return None
-        return Hoist(rows[0][0], rows[0][1], rows[0][2], rows[0][3], rows[0][4])
+        return Hoist(rows[0][0], rows[0][1], rows[0][2], rows[0][3], rows[0][4], rows[0][5], rows[0][6])
 
     def update(self, hoist):
         con = sqlite3.connect(self.database)
         c = con.cursor()
-        c.execute("UPDATE hoists SET exercise = ?, weight = ?, reps = ? WHERE id = ?", (hoist.exercise, hoist.weight, hoist.reps, hoist.id))
+        c.execute("UPDATE hoists SET session_id = ?, exercise = ?, weight = ?, reps = ?, time = ? WHERE id = ?",
+                  (hoist.session.id, hoist.exercise, hoist.weight, hoist.reps, hoist.time, hoist.id))
         con.commit()
         con.close()
 

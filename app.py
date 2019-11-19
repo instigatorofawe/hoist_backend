@@ -22,6 +22,16 @@ def login():
     return loginController.login(request.get_json())
 
 
+@app.route('/validate', methods=['POST'])
+def validate():
+    return loginController.validate(request.get_json())
+
+
+@app.route('/renew', methods=['POST'])
+def renew():
+    return loginController.renew(request.get_json())
+
+
 @app.route('/register', methods=['POST'])
 def register():
     return registrationController.register(request.get_json())
