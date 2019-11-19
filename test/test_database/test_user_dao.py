@@ -36,8 +36,11 @@ class TestUserDAO(unittest.TestCase):
         user_dao.create(user)
 
         retrieved_user = user_dao.get(user.id)
-
         self.assertTrue(retrieved_user.verify("password"))
+
+        retrieved_user = user_dao.get_by_username(user.username)
+        self.assertTrue(retrieved_user.verify("password"))
+
 
 
 

@@ -26,6 +26,19 @@ class UserDAO:
 
         return User(rows[0][0],rows[0][1], rows[0][2])
 
+    def get_by_username(self, username):
+        con = sqlite3.connect(self.database)
+        c = con.cursor()
+        c.execute("SELECT * FROM users WHERE username = ?", (username,))
+        rows = c.fetchall()
+        con.commit()
+        con.close()
+
+        if len(rows) == 0:
+            return None
+
+        return User(rows[0][0], rows[0][1], rows[0][2])
+
     def update(self, user):
         con = sqlite3.connect(self.database)
         c = con.cursor()
