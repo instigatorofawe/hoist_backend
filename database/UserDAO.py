@@ -9,7 +9,7 @@ class UserDAO:
     def create(self, user):
         con = sqlite3.connect(self.database)
         c = con.cursor()
-        c.execute("INSERT INTO users VALUES (?, ?, ?, ?)", (user.id, user.username, user.password_hash, user.salt))
+        c.execute("INSERT INTO users VALUES (?, ?, ?)", (user.id, user.username, user.password_hash))
         con.commit()
         con.close()
 
@@ -24,12 +24,12 @@ class UserDAO:
         if len(rows) == 0:
             return None
 
-        return User(rows[0][0],rows[0][1], rows[0][2], rows[0][3])
+        return User(rows[0][0],rows[0][1], rows[0][2])
 
     def update(self, user):
         con = sqlite3.connect(self.database)
         c = con.cursor()
-        c.execute("UPDATE users SET password_hash = ?, salt = ? WHERE id = ?", (user.password_hash, user.salt, user.id))
+        c.execute("UPDATE users SET password_hash = ? WHERE id = ?", (user.password_hash, user.id))
         con.commit()
         con.close()
 
