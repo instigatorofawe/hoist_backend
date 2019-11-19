@@ -1,4 +1,5 @@
 import sqlite3
+from model.Hoist import Hoist
 
 
 class HoistDAO:
@@ -7,23 +8,45 @@ class HoistDAO:
 
     def create(self, hoist):
         con = sqlite3.connect(self.database)
-
+        c = con.cursor()
+        c.execute("INSERT INTO hoists VALUES(?,?,?,?,?)", (hoist.id, hoist.user.id, hoist.exercise, hoist.weight, hoist.reps))
+        con.commit()
         con.close()
-        # TODO
-        return
 
     def get(self, id):
-        # TODO
-        return
+        con = sqlite3.connect(self.database)
+        c = con.cursor()
+        c.execute("SELECT * FROM hoists WHERE id = ?", (id,))
+        rows = c.fetchall()
+        con.commit()
+        con.close()
+
+        if len(rows) == 0:
+            return None
+        return Hoist(rows[0][0], rows[0][1], rows[0][2], rows[0][3], rows[0][4])
 
     def update(self, hoist):
-        # TODO
-        return
+        con = sqlite3.connect(self.database)
+        c = con.cursor()
+        c.execute("UPDATE hoists SET exercise = ?, weight = ?, reps = ? WHERE id = ?", (hoist.exercise, hoist.weight, hoist.reps, hoist.id))
+        con.commit()
+        con.close()
 
     def delete(self, hoist):
-        # TODO
-        return
+        con = sqlite3.connect(self.database)
+        c = con.cursor()
+        c.execute("DELETE FROM hoists WHERE id = ?", (hoist.id,))
+        con.commit()
+        con.close()
 
     def next_id(self):
-        # TODO
-        return
+        con = sqlite3.connect(self.database)
+        c = con.cursor()
+        c.execute("SELECT MAX(id) FROM hoists")
+        r = c.fetchone()
+        con.commit()
+        con.close()
+
+        if r[0] is None:
+            return 0
+        return r[0] + 1
