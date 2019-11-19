@@ -2,3 +2,4 @@
 /venv/
 /test/test_database/test.sqlite
 /test/test.sqlite
+/__pycache__/

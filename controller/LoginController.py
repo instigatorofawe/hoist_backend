@@ -32,5 +32,13 @@ class LoginController:
             return {'error': 'Invalid token'}, 401
 
     def renew(self, request):
-        # TODO renew
-        return
+        try:
+            decoded_token = jwt.decode(request['token'], config.secret_key, algorithms='HS256')
+            user = self.userDAO.get(decoded_token['user'])
+            if user is None:
+                return {'error': 'User not found'}, 401
+            if decoded_token['issued'] < (datetime.datetime.utcnow() - datetime.timedelta(days=1)).timestamp():
+                return {'error': 'Token expired'}, 401
+            return {'token': user.issue_token()}, 200
+        except jwt.DecodeError:
+            return {'error': 'Invalid token'}, 401
