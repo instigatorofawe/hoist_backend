@@ -9,13 +9,3 @@ def init_db(database):
     con.commit()
     con.close()
     return
-
-
-def clear_db(database):
-    con = sqlite3.connect(database)
-    c = con.cursor()
-    c.execute("DROP TABLE IF EXISTS users")
-    c.execute("DROP TABLE IF EXISTS hoists")
-    con.commit()
-    con.close()
-    return
