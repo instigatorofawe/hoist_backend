@@ -3,6 +3,7 @@ class SessionController:
         return
 
     def merge(self, request):
+        token = request['token']
         return
 
     def delete(self, request):
