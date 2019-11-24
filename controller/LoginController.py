@@ -9,6 +9,7 @@ class LoginController:
         return
 
     def login(self, request):
+        # Login request with username and password
         username = request['username']
         password = request['password']
 
@@ -20,6 +21,7 @@ class LoginController:
         return {'error': 'Wrong password'}, 401
 
     def validate(self, request):
+        # Authentication token validation request
         try:
             decoded_token = jwt.decode(request['token'], config.secret_key, algorithms='HS256')
             user = self.userDAO.get(decoded_token['user'])
@@ -32,6 +34,7 @@ class LoginController:
             return {'error': 'Invalid token'}, 401
 
     def renew(self, request):
+        # Authentication token renewal request
         try:
             decoded_token = jwt.decode(request['token'], config.secret_key, algorithms='HS256')
             user = self.userDAO.get(decoded_token['user'])

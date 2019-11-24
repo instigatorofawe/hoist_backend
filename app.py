@@ -4,6 +4,7 @@ from controller.LoginController import LoginController
 from controller.RegistrationController import RegistrationController
 from database.UserDAO import UserDAO
 from database.HoistDAO import HoistDAO
+from database.SessionDAO import SessionDAO
 import config
 
 app = Flask(__name__)
@@ -11,6 +12,7 @@ app = Flask(__name__)
 # Initialize components, inject dependencies
 userDAO = UserDAO(config.db_name)
 hoistDAO = HoistDAO(config.db_name)
+sessionDAO = SessionDAO(config.db_name)
 
 hoistController = HoistController(hoistDAO, userDAO)
 loginController = LoginController(userDAO)

@@ -30,6 +30,10 @@ class TestLoginController(unittest.TestCase):
         result = login_controller.login({'username': 'username', 'password': 'password'})
         self.assertEqual(result[1], 200)
 
+        decoded_token = jwt.decode(result[0]['token'], config.secret_key, algorithms='HS256')
+        retrieved_user = user_dao.get(decoded_token['user'])
+        self.assertEqual(retrieved_user.username, 'username')
+
     def test_validate(self):
         database.schema.init_db("test.sqlite")
         user_dao = UserDAO("test.sqlite")
