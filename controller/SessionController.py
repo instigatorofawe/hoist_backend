@@ -4,6 +4,8 @@ class SessionController:
 
     def merge(self, request):
         token = request['token']
+        # Check that token is valid
+        # Check that all sessions are owned by the user, then merge to the earliest one
         return
 
     def delete(self, request):
