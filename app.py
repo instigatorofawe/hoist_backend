@@ -11,8 +11,8 @@ app = Flask(__name__)
 
 # Initialize components, inject dependencies
 userDAO = UserDAO(config.db_name)
-hoistDAO = HoistDAO(config.db_name)
-sessionDAO = SessionDAO(config.db_name)
+sessionDAO = SessionDAO(config.db_name, userDAO)
+hoistDAO = HoistDAO(config.db_name, userDAO, sessionDAO)
 
 hoistController = HoistController(hoistDAO, userDAO)
 loginController = LoginController(userDAO)
