@@ -41,6 +41,9 @@ class SessionDAO:
         con.close()
 
     def merge(self, sessions):
+        # Determine which session is earliest
+        # Assign all hoists to this session
+        # Delete all but the earliest session
         # TODO
         return
 

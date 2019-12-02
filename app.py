@@ -14,7 +14,7 @@ userDAO = UserDAO(config.db_name)
 sessionDAO = SessionDAO(config.db_name, userDAO)
 hoistDAO = HoistDAO(config.db_name, userDAO, sessionDAO)
 
-hoistController = HoistController(hoistDAO, userDAO)
+hoistController = HoistController(hoistDAO, userDAO, sessionDAO)
 loginController = LoginController(userDAO)
 registrationController = RegistrationController(userDAO)
 
