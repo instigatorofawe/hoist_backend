@@ -29,7 +29,7 @@ class SessionDAO:
     def update(self, session):
         con = sqlite3.connect(self.database)
         c = con.cursor()
-        c.execute("UPDATE sessions SET user_id = ?, time =? WHERE id = ?", (session.user.id, session.time, session.id))
+        c.execute("UPDATE sessions SET user_id = ?, time = ? WHERE id = ?", (session.user.id, session.time, session.id))
         con.commit()
         con.close()
 
@@ -40,12 +40,20 @@ class SessionDAO:
         con.commit()
         con.close()
 
-    def merge(self, sessions):
+    def merge(self, session_ids):
+        con = sqlite3.connect(self.database)
+        c = con.cursor()
         # Determine which session is earliest
+        c.execute(f"SELECT * FROM sessions WHERE time = (SELECT MIN(time) FROM SESSIONS WHERE ID in ({','.join(['?']*len(session_ids))}))", session_ids)
+        rows = c.fetchall()
+
         # Assign all hoists to this session
         # Delete all but the earliest session
-        # TODO
-        return
+        if len(rows) > 0:
+            c.execute(f"UPDATE hoists SET session_id = ? WHERE session_id IN ({','.join(['?']*len(session_ids))})", ([rows[0][0]] + session_ids))
+            c.execute(f"DELETE FROM sessions WHERE id IN ({','.join(['?']*len(session_ids))}) AND id != ?", (session_ids + [rows[0][0]]))
+        con.commit()
+        con.close()
 
     def next_id(self):
         con = sqlite3.connect(self.database)

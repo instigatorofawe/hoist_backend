@@ -9,13 +9,14 @@ class TestUserDAO(unittest.TestCase):
     def setUp(self) -> None:
         if os.path.exists("test.sqlite"):
             os.remove("test.sqlite")
+        database.schema.init_db("test.sqlite")
+
 
     def tearDown(self) -> None:
         if os.path.exists("test.sqlite"):
             os.remove("test.sqlite")
 
     def test_id_counter(self):
-        database.schema.init_db("test.sqlite")
 
         user_dao = UserDAO("test.sqlite")
         self.assertEqual(user_dao.next_id(), 0)
