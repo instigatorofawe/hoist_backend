@@ -1,8 +1,9 @@
 class HoistController:
-    def __init__(self, hoistDAO, userDAO, sessionDAO):
+    def __init__(self, hoistDAO, userDAO, sessionDAO, authController):
         self.hoistDAO = hoistDAO
         self.userDAO = userDAO
         self.sessionDAO = sessionDAO
+        self.authController = authController
 
     def submit(self, request):
         token = request['token']

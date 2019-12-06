@@ -2,6 +2,12 @@ class SessionController:
     def __init__(self):
         return
 
+    def create(self, request):
+        return
+
+    def update(self, request):
+        return
+
     def merge(self, request):
         token = request['token']
         # Check that token is valid
