@@ -3,7 +3,6 @@ class HoistController:
         self.hoistDAO = hoistDAO
         self.userDAO = userDAO
         self.sessionDAO = sessionDAO
-        return
 
     def submit(self, request):
         token = request['token']
