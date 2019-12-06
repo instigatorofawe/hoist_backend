@@ -2,6 +2,7 @@ from flask import Flask, request
 from controller.HoistController import HoistController
 from controller.LoginController import LoginController
 from controller.RegistrationController import RegistrationController
+from controller.AuthController import AuthController
 from database.UserDAO import UserDAO
 from database.HoistDAO import HoistDAO
 from database.SessionDAO import SessionDAO
@@ -14,6 +15,7 @@ userDAO = UserDAO(config.db_name)
 sessionDAO = SessionDAO(config.db_name, userDAO)
 hoistDAO = HoistDAO(config.db_name, userDAO, sessionDAO)
 
+authController = AuthController(userDAO)
 hoistController = HoistController(hoistDAO, userDAO, sessionDAO)
 loginController = LoginController(userDAO)
 registrationController = RegistrationController(userDAO)
@@ -38,6 +40,20 @@ def renew():
 def register():
     return registrationController.register(request.get_json())
 
+
+@app.route('/hoists/new', methods=['POST'])
+def new_hoist():
+    return HoistController.submit(request.get_json())
+
+
+@app.route('/hoists/update', methods=['POST'])
+def update_hoist():
+    return HoistController.update(request.get_json())
+
+
+@app.route('/hoists/delete', methods=['POST'])
+def delete_hoist():
+    return HoistController.delete(request.get_json())
 
 if __name__ == '__main__':
     app.run()
