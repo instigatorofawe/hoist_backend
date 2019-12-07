@@ -2,7 +2,6 @@ from flask import Flask, request
 from controller.HoistController import HoistController
 from controller.LoginController import LoginController
 from controller.RegistrationController import RegistrationController
-from controller.AuthController import AuthController
 from controller.SessionController import SessionController
 from controller.SuggestionController import SuggestionController
 from database.UserDAO import UserDAO
@@ -19,8 +18,7 @@ sessionDAO = SessionDAO(config.db_name, userDAO)
 hoistDAO = HoistDAO(config.db_name, userDAO, sessionDAO)
 suggestionGenerator = SuggestionGenerator
 
-authController = AuthController(userDAO)
-hoistController = HoistController(hoistDAO, userDAO, sessionDAO, authController)
+hoistController = HoistController(hoistDAO, userDAO, sessionDAO)
 loginController = LoginController(userDAO)
 registrationController = RegistrationController(userDAO)
 sessionController = SessionController()
