@@ -7,6 +7,7 @@ from model.User import User
 from database.UserDAO import UserDAO
 from controller.LoginController import LoginController
 
+
 class TestLoginController(unittest.TestCase):
     def setUp(self) -> None:
         if os.path.exists("test.sqlite"):
