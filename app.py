@@ -60,16 +60,6 @@ def delete_hoist():
     return hoistController.delete(request.get_json())
 
 
-@app.route('api/sessions/new', methods=['POST'])
-def new_session():
-    return sessionController.create(request.get_json())
-
-
-@app.route('api/sessions/update', methods=['POST'])
-def update_session():
-    return sessionController.update(request.get_json())
-
-
 @app.route('api/sessions/delete', methods=['POST'])
 def delete_session():
     return sessionController.delete(request.get_json())
