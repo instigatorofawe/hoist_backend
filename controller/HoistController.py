@@ -13,31 +13,31 @@ class HoistController:
     def submit(self, request):
         exercise = request['exercise']
         weight = request['weight']
-        reps = request['weight']
+        reps = request['reps']
         # Check that auth token is valid
         try:
             decoded_token = jwt.decode(request['token'], config.secret_key, algorithms='HS256')
             user = self.userDAO.get(decoded_token['user'])
             if user is None:
                 return {'error': 'User not found'}, 401
-            if decoded_token['issued'] < (datetime.datetime.utcnow() - datetime.timedelta(days=1)).timestamp():
+            elif decoded_token['issued'] < (datetime.datetime.utcnow() - datetime.timedelta(days=1)).timestamp():
                 return {'error': 'Token expired'}, 401
-
-            # Check if there are any recent hoists. (30 minutes)
-            recent_hoist = self.hoistDAO.get_most_recent(user)
-
-            # If there are recent hoists, append to that hoist's session
-            # Else, create new session
-            if recent_hoist is None or recent_hoist.time < (datetime.datetime.utcnow() - datetime.timedelta(minutes=30)).timestamp():
-                session = Session(self.sessionDAO.next_id(), user, datetime.datetime.utcnow().timestamp())
-                self.sessionDAO.create(session)
             else:
-                session = recent_hoist.session
+                # Check if there are any recent hoists. (30 minutes)
+                recent_hoist = self.hoistDAO.get_most_recent(user)
 
-            hoist = Hoist(self.hoistDAO.next_id(), user, session, exercise, weight, reps, datetime.datetime.utcnow().timestamp())
-            self.hoistDAO.create(hoist)
+                # If there are recent hoists, append to that hoist's session
+                # Else, create new session
+                if recent_hoist is None or recent_hoist.time < (datetime.datetime.utcnow() - datetime.timedelta(minutes=30)).timestamp():
+                    session = Session(self.sessionDAO.next_id(), user, datetime.datetime.utcnow().timestamp())
+                    self.sessionDAO.create(session)
+                else:
+                    session = recent_hoist.session
 
-            return {'id': hoist.id, 'session_id': hoist.session.id}, 200
+                hoist = Hoist(self.hoistDAO.next_id(), user, session, exercise, weight, reps, datetime.datetime.utcnow().timestamp())
+                self.hoistDAO.create(hoist)
+
+                return {'id': hoist.id, 'session_id': hoist.session.id}, 200
         except jwt.DecodeError:
             return {'error': 'Invalid token'}, 401
 
@@ -45,7 +45,7 @@ class HoistController:
         id = request['id']
         exercise = request['exercise']
         weight = request['weight']
-        reps = request['weight']
+        reps = request['reps']
         # Check that auth token is valid
         try:
             decoded_token = jwt.decode(request['token'], config.secret_key, algorithms='HS256')
