@@ -10,6 +10,9 @@ class HoistController:
         self.userDAO = userDAO
         self.sessionDAO = sessionDAO
 
+    def get(self, request):
+        return
+
     def submit(self, request):
         exercise = request['exercise']
         weight = request['weight']
