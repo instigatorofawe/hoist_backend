@@ -28,6 +28,27 @@ class HoistDAO:
             return None
         return Hoist(rows[0][0], self.userDAO.get(rows[0][1]), self.sessionDAO.get(rows[0][2]), rows[0][3], rows[0][4], rows[0][5], rows[0][6])
 
+    def get_most_recent(self, user):
+        con = sqlite3.connect(self.database)
+        c = con.cursor()
+        c.execute("SELECT * FROM hoists WHERE user_id = ?", (user.id,))
+        rows = c.fetchall()
+        con.commit()
+        con.close()
+
+        if len(rows) == 0:
+            return None
+
+        index = 0
+        time = 0
+        for i in range(len(rows)):
+            if rows[i][6] > time:
+                time = rows[i][6]
+                index = i
+
+        return Hoist(rows[index][0], self.userDAO.get(rows[index][1]), self.sessionDAO.get(rows[index][2]),
+                     rows[index][3], rows[index][4], rows[index][5], rows[index][6])
+
     def update(self, hoist):
         con = sqlite3.connect(self.database)
         c = con.cursor()
